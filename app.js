@@ -10,7 +10,7 @@ app.use((req, res, next) => {
 });
 
 // Define a route to retrieve the API key
-app.get('/apikey', (req, res) => {
+app.get('/apiKey', (req, res) => {
   // Replace this with your actual API key
   const apiKey = 'ecf82537022ea68bfe294599ccd9bfb2';
   const geoApi = 'AIzaSyBazbYas6WlmtCflXovhVkwXscJG3Kqd_w';
@@ -25,3 +25,6 @@ app.listen(port, () => {
 });
 
 module.exports = app;
+
+
+
