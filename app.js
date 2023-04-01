@@ -1,21 +1,34 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const Weather = require('./weather.js');
+
+dotenv.config();
+
+
 const app = express();
 
 // Allow cross-origin requests
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
+app.use(cors());
+
+
+
+// Define a route to retrieve the current weather data
+app.get('/weather/current/:city', async (req, res) => {
+  const city = req.params.city;
+  const weather = new Weather(city);
+  const data = await weather.getWeatherNow();
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(data));
 });
 
-// Define a route to retrieve the API key
-app.get('/apiKey', (req, res) => {
-  // Replace this with your actual API key
-  const apiKey = 'ecf82537022ea68bfe294599ccd9bfb2';
-  const geoApi = 'AIzaSyBazbYas6WlmtCflXovhVkwXscJG3Kqd_w';
+// Define a route to retrieve the weather forecast data
+app.get('/weather/forecast/:city', async (req, res) => {
+  const city = req.params.city;
+  const weather = new Weather(city);
+  const data = await weather.getCurrentWeather();
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({ apiKey, geoApi }));
+  res.send(JSON.stringify(data));
 });
 
 // Start the server
@@ -25,6 +38,3 @@ app.listen(port, () => {
 });
 
 module.exports = app;
-
-
-
